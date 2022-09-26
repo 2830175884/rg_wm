@@ -26,6 +26,7 @@ public class SetmealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal> impl
     @SuppressWarnings("AlibabaTransactionMustHaveRollback")
     @Override
     @Transactional
+    //待判断id重复
     public void saveWithDish(SetmealDto setmealDto) {
         this.save(setmealDto);
         Long id = setmealDto.getId();
