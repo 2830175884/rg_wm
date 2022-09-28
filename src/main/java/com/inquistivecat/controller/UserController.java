@@ -3,7 +3,7 @@ package com.inquistivecat.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.inquistivecat.commom.Result;
 import com.inquistivecat.entity.User;
-import com.inquistivecat.service.UserService;
+import com.inquistivecat.service.impl.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ import java.util.Map;
 @Slf4j
 public class UserController {
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
     /**
      * 发送手机验证码

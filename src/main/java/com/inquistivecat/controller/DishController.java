@@ -7,9 +7,9 @@ import com.inquistivecat.dto.DishDto;
 import com.inquistivecat.entity.Category;
 import com.inquistivecat.entity.Dish;
 import com.inquistivecat.entity.DishFlavor;
-import com.inquistivecat.service.CategoryService;
-import com.inquistivecat.service.DishFlavorService;
-import com.inquistivecat.service.DishService;
+import com.inquistivecat.service.impl.CategoryServiceImpl;
+import com.inquistivecat.service.impl.DishFlavorServiceImpl;
+import com.inquistivecat.service.impl.DishServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +31,11 @@ import java.util.stream.Collectors;
 @Slf4j
 public class DishController {
     @Autowired
-    private DishService dishService;
+    private DishServiceImpl dishService;
     @Autowired
-    private DishFlavorService dishFlavorService;
+    private DishFlavorServiceImpl dishFlavorService;
     @Autowired
-    private CategoryService categoryService;
+    private CategoryServiceImpl categoryService;
     @Autowired
     private RedisTemplate redisTemplate;
 

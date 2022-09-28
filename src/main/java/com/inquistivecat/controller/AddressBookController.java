@@ -6,6 +6,7 @@ import com.inquistivecat.commom.BaseContext;
 import com.inquistivecat.commom.Result;
 import com.inquistivecat.entity.AddressBook;
 import com.inquistivecat.service.AddressBookService;
+import com.inquistivecat.service.impl.AddressBookServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ import java.util.List;
 public class AddressBookController {
 
     @Autowired
-    private AddressBookService addressBookService;
+    private AddressBookServiceImpl addressBookService;
 
     /**
      * 新增

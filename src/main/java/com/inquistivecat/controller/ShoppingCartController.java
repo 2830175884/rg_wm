@@ -5,6 +5,7 @@ import com.inquistivecat.commom.BaseContext;
 import com.inquistivecat.commom.Result;
 import com.inquistivecat.entity.ShoppingCart;
 import com.inquistivecat.service.ShoppingCartService;
+import com.inquistivecat.service.impl.ShoppingCartServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ import java.util.List;
 @Slf4j
 public class ShoppingCartController {
     @Autowired
-    private ShoppingCartService shoppingCartService;
+    private ShoppingCartServiceImpl shoppingCartService;
 
     /**
      * 添加购物车

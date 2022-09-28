@@ -2,7 +2,7 @@ package com.inquistivecat.controller;
 
 import com.inquistivecat.commom.Result;
 import com.inquistivecat.entity.Orders;
-import com.inquistivecat.service.OrderService;
+import com.inquistivecat.service.impl.OrderServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class OrderController {
     @Autowired
-    private OrderService orderService;
+    private OrderServiceImpl orderService;
 
     /**
      * 提交订单并保存

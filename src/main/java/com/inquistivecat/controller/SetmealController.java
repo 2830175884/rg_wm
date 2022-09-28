@@ -8,7 +8,9 @@ import com.inquistivecat.entity.Category;
 import com.inquistivecat.entity.Setmeal;
 import com.inquistivecat.service.CategoryService;
 import com.inquistivecat.service.SetmealDishService;
-import com.inquistivecat.service.SetmealService;
+import com.inquistivecat.service.impl.CategoryServiceImpl;
+import com.inquistivecat.service.impl.SetmealDishServiceImpl;
+import com.inquistivecat.service.impl.SetmealServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +30,11 @@ import java.util.stream.Collectors;
 @Slf4j
 public class SetmealController {
     @Autowired
-    private SetmealService setmealService;
+    private SetmealServiceImpl setmealService;
     @Autowired
-    private SetmealDishService setmealDishService;
+    private SetmealDishServiceImpl setmealDishService;
     @Autowired
-    private CategoryService categoryService;
+    private CategoryServiceImpl categoryService;
 
     /**
      * 保存套餐及其对应菜品关系

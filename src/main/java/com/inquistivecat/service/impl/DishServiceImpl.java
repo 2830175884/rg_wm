@@ -35,7 +35,11 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
         flavorService.saveBatch(flavors);
 
     }
-
+    /**
+     * 根据id返回菜品信息和对应口味信息
+     * @param id
+     * @return
+     */
     @Override
     public DishDto getByIdWithFlavor(Long id) {
         Dish dish = this.getById(id);
