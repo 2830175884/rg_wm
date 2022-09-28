@@ -31,7 +31,11 @@ public class LoginCheckFilter implements Filter {
                 "/backend/**",
                 "/front/**",
                 "user/sendMsg",
-                "/user/login"
+                "/user/login",
+                "/doc.html",
+                "/webjars/**",
+                "/swagger-resources",
+                "/v2/api-docs"
         };
 //        log.info("拦截到请求：{}",request.getRequestURI());
         boolean check = check(urls, requestURI);

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 /**
+ * 员工管理模块
  * @author hp
  */
 @Slf4j
@@ -65,22 +66,14 @@ public class EmployeeController {
 
     /**
      * 新增员工
-     * @param request
      * @param employee
      * @return
      */
     @PostMapping
-    public Result<String> save(HttpServletRequest request, @RequestBody Employee employee){
+    public Result<String> save(@RequestBody Employee employee){
         log.info("新增员工信息，{}",employee.toString());
         employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
-//        employee.setCreateTime(LocalDateTime.now());
-//        employee.setUpdateTime(LocalDateTime.now());
-        Long attribute = (Long)request.getSession().getAttribute("employee");
-//        employee.setCreateUser(attribute);
-//        employee.setUpdateUser(attribute);
         employeeService.save(employee);
-
-
         return Result.success("新增员工成功");
     }
 
@@ -99,24 +92,17 @@ public class EmployeeController {
         queryWrapper.orderByDesc(Employee::getUpdateTime);
         employeeService.page(pageInfo, queryWrapper);
         return Result.success(pageInfo);
-
-
     }
 
     /**
      * 变更员工信息
-     * @param request
      * @param employee
      * @return
      */
     @PutMapping
-    public Result<String> update(HttpServletRequest request,@RequestBody Employee employee){
-        Long employeeId = (Long)request.getSession().getAttribute("employee");
-//        employee.setUpdateTime(LocalDateTime.now());
-//        employee.setUpdateUser(employeeId);
+    public Result<String> update(@RequestBody Employee employee){
         employeeService.updateById(employee);
         return Result.success("员工信息修改成功");
-
     }
 
     /**

@@ -26,7 +26,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     private SetmealService setmealService;
 
     @Override
-    public void remove(Long id) {
+    public void removeCategory(Long id) {
         LambdaQueryWrapper<Dish>  lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(Dish::getCategoryId,id);
         int count1 = dishService.count(lambdaQueryWrapper);

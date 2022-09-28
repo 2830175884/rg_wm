@@ -34,6 +34,11 @@ public class SetmealController {
     @Autowired
     private CategoryService categoryService;
 
+    /**
+     * 保存套餐及其对应菜品关系
+     * @param setmealDto
+     * @return
+     */
     @PostMapping
     @CacheEvict(value = "setmealCache",allEntries = true)
     public Result<String> save(@RequestBody SetmealDto setmealDto){
@@ -41,8 +46,15 @@ public class SetmealController {
         return Result.success("添加成功");
     }
 
+    /**
+     * 分页查询套餐信息
+     * @param page
+     * @param pageSize
+     * @param name
+     * @return
+     */
     @GetMapping("/page")
-    public Result<Page> listPage(int page,int pageSize,String name) {
+    public Result<Page> page(int page,int pageSize,String name) {
         Page<Setmeal> setmealPage = new Page<>(page, pageSize);
         Page<SetmealDto> setmealDtoPage = new Page<>();
         LambdaQueryWrapper<Setmeal> queryWrapper = new LambdaQueryWrapper<Setmeal>();
@@ -66,6 +78,11 @@ public class SetmealController {
     }
 
 
+    /**
+     * (批量)删除套餐
+     * @param ids
+     * @return
+     */
     @DeleteMapping
     @CacheEvict(value = "setmealCache",allEntries = true)
     public Result<String> remove(@RequestParam List<Long> ids){
@@ -91,4 +108,32 @@ public class SetmealController {
 
     }
 
+    /**
+     * 返回指定id的套餐及其菜品信息
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    @Cacheable(value = "setmealCache",key = "#id")
+    public Result<SetmealDto> get (@PathVariable Long id) {
+        return Result.error("接口未完成");
+    }
+    /**
+     * (批量)修改套餐售卖状态
+     * @param status
+     * @param ids
+     * @return
+     */
+    @PostMapping("/status/{status}")
+    @CacheEvict(value = "setmealCache",allEntries = true)
+    public Result<String> updateStatus(@PathVariable int status,@RequestParam("ids") List<Long> ids){
+        LambdaQueryWrapper<Setmeal> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.in(Setmeal::getId,ids);
+        List<Setmeal> list = setmealService.list(queryWrapper);
+        for (Setmeal setmeal : list) {
+            setmeal.setStatus(status);
+        }
+        setmealService.updateBatchById(list);
+        return Result.success("更新成功");
+    }
 }
