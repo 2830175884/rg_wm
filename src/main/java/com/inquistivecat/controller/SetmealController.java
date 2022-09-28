@@ -114,6 +114,7 @@ public class SetmealController {
      * @return
      */
     @GetMapping("/{id}")
+    @Cacheable(value = "setmealCache",key = "#id")
     public Result<SetmealDto> get (@PathVariable Long id) {
         return Result.error("接口未完成");
     }
@@ -124,7 +125,15 @@ public class SetmealController {
      * @return
      */
     @PostMapping("/status/{status}")
+    @CacheEvict(value = "setmealCache",allEntries = true)
     public Result<String> updateStatus(@PathVariable int status,@RequestParam("ids") List<Long> ids){
-        return Result.error("接口还未完成");
+        LambdaQueryWrapper<Setmeal> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.in(Setmeal::getId,ids);
+        List<Setmeal> list = setmealService.list(queryWrapper);
+        for (Setmeal setmeal : list) {
+            setmeal.setStatus(status);
+        }
+        setmealService.updateBatchById(list);
+        return Result.success("更新成功");
     }
 }

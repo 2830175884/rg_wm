@@ -13,6 +13,8 @@ import com.inquistivecat.service.DishService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,6 +45,7 @@ public class DishController {
      * @return
      */
     @PostMapping
+    @CacheEvict(value = "dishCache",allEntries = true)
     public Result<String> save(@RequestBody DishDto dishDto) {
         dishService.saveWithFlavor(dishDto);
         String key = "dish_"+dishDto.getCategoryId()+"_"+dishDto.getStatus();
@@ -59,6 +62,7 @@ public class DishController {
      * @return
      */
     @GetMapping("/page")
+    @Cacheable(value = "dishCache",key = "#page+'_'+#pageSize")
     public Result<Page> page(int page,int pageSize,String name){
         Page<Dish> pageInfo = new Page(page,pageSize);
         Page<DishDto> pageDto = new Page<>();
@@ -104,6 +108,7 @@ public class DishController {
      * @return
      */
     @PutMapping
+    @CacheEvict(value = "dishCache",allEntries = true)
     public Result<String> update(@RequestBody DishDto dishDto){
 
         dishService.updateWithFlavor(dishDto);
@@ -120,6 +125,7 @@ public class DishController {
      * @return
      */
     @GetMapping("/list")
+    @Cacheable(value = "dishCache",key = "#dish.categoryId+'_'")
     public Result<List<DishDto>> list(Dish dish){
         List<DishDto> listDto  = null;
         //动态构造key
@@ -153,7 +159,9 @@ public class DishController {
      * @return
      */
     @DeleteMapping
+    @CacheEvict(value = "dishCache",allEntries = true)
     public Result<String> delete(@RequestParam List<Long> ids){
+
         return Result.error("接口还未完成");
     }
 
@@ -164,22 +172,15 @@ public class DishController {
      * @return
      */
     @PostMapping("/status/{status}")
+    @CacheEvict(value = "dishCache",allEntries = true)
     public Result<String> updateStatus(@PathVariable int status,@RequestParam("ids") List<Long> ids){
-        return Result.error("接口还未完成");
+        LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.in(Dish::getId,ids);
+        List<Dish> list = dishService.list(queryWrapper);
+        for (Dish dish : list) {
+            dish.setStatus(status);
+        }
+        dishService.updateBatchById(list);
+        return Result.success("更新成功");
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
