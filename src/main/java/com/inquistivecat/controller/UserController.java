@@ -27,6 +27,7 @@ public class UserController {
 
     /**
      * 发送手机验证码
+     * 前端未使用该接口，直接登录
      * @param user
      * @return
      */
@@ -42,6 +43,12 @@ public class UserController {
         return Result.success("发送成功");
     }
 
+    /**
+     * 登录，是新用户就注册并登录
+     * @param map
+     * @param session
+     * @return
+     */
     @PostMapping("/login")
     public  Result<User> login(@RequestBody Map map, HttpSession session) {
 

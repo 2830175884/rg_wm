@@ -36,9 +36,14 @@ public class DishController {
     private CategoryService categoryService;
     @Autowired
     private RedisTemplate redisTemplate;
+
+    /**
+     * 保存新增菜品及其对应口味信息
+     * @param dishDto
+     * @return
+     */
     @PostMapping
     public Result<String> save(@RequestBody DishDto dishDto) {
-//        log.info(dihDto.toString());
         dishService.saveWithFlavor(dishDto);
         String key = "dish_"+dishDto.getCategoryId()+"_"+dishDto.getStatus();
         redisTemplate.delete(key);
@@ -47,14 +52,14 @@ public class DishController {
 
 
     /**
-     * 菜品分页信息查询
+     * 菜品分页信息查询，用dto展示数据
      * @param page
      * @param pageSize
      * @param name
      * @return
      */
     @GetMapping("/page")
-    public Result<Page> listPage(int page,int pageSize,String name){
+    public Result<Page> page(int page,int pageSize,String name){
         Page<Dish> pageInfo = new Page(page,pageSize);
         Page<DishDto> pageDto = new Page<>();
         LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<Dish>();
@@ -82,10 +87,22 @@ public class DishController {
     }
 
 
+    /**
+     * 根据id获取菜品及其对应口味信息
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     public Result<DishDto> get(@PathVariable Long id){
         return Result.success(dishService.getByIdWithFlavor(id));
     }
+
+
+    /**
+     * 修改某菜品及其对应口味信息
+     * @param dishDto
+     * @return
+     */
     @PutMapping
     public Result<String> update(@RequestBody DishDto dishDto){
 
@@ -96,19 +113,9 @@ public class DishController {
 
     }
 
-
-
-//    @GetMapping("/list")
-//    public Result<List<Dish>> list(Dish dish){
-//        LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
-//        queryWrapper.eq(dish.getCategoryId()!=null,Dish::getCategoryId,dish.getCategoryId());
-//        queryWrapper.eq(Dish::getStatus,1);
-//        queryWrapper.orderByAsc(Dish::getSort).orderByDesc(Dish::getUpdateTime);
-//        List<Dish> list = dishService.list(queryWrapper);
-//        return Result.success(list);
-//    }
     /**
      * 根据指定条件来查询菜品信息
+     * 一般是根据某个分类来查对应所有的菜品以及口味信息
      * @param dish
      * @return
      */
@@ -121,7 +128,6 @@ public class DishController {
         if(listDto!=null){
             return Result.success(listDto);
         }
-
         LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(dish.getCategoryId()!=null,Dish::getCategoryId,dish.getCategoryId());
         queryWrapper.eq(Dish::getStatus,1);
@@ -137,12 +143,30 @@ public class DishController {
             dishDto.setFlavors(flavors);
             return dishDto;
         }).collect(Collectors.toList());
-
         redisTemplate.opsForValue().set(key,listDto,60, TimeUnit.MINUTES);
         return Result.success(listDto);
 }
 
+    /**
+     * (批量)删除指定菜品及其对应口味信息
+     * @param ids
+     * @return
+     */
+    @DeleteMapping
+    public Result<String> delete(@RequestParam List<Long> ids){
+        return Result.error("接口还未完成");
+    }
 
+    /**
+     * (批量)修改菜品售卖状态
+     * @param status
+     * @param ids
+     * @return
+     */
+    @PostMapping("/status/{status}")
+    public Result<String> updateStatus(@PathVariable int status,@RequestParam("ids") List<Long> ids){
+        return Result.error("接口还未完成");
+    }
 
 
 

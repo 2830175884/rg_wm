@@ -22,7 +22,6 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-
     /**
      * 新增分类
      * @param category
@@ -30,7 +29,6 @@ public class CategoryController {
      */
     @PostMapping
     public Result<String> save(@RequestBody Category category){
-//        log.info("_________________");
         categoryService.save(category);
         return Result.success("新增分类成功");
     }
@@ -58,8 +56,7 @@ public class CategoryController {
      */
     @DeleteMapping
     public Result<String> delete(Long ids){
-
-        categoryService.remove(ids);
+        categoryService.removeCategory(ids);
         return Result.success("删除成功");
     }
 

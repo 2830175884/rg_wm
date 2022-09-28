@@ -12,5 +12,5 @@ public interface CategoryService extends IService<Category> {
      * @param id
      *
      */
-    void remove(Long id);
+    void removeCategory(Long id);
 }
